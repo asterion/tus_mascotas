@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% include 'title.html.twig' with {} only %}
+    <h2>Pet creation</h2>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" class="btn btn-primary" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('pet_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

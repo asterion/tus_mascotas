@@ -137,4 +137,9 @@ class Human
     {
         return $this->lastname;
     }
+
+    public function __toString()
+    {
+        return sprintf('%s %s', $this->getFirstname(), $this->getLastname());
+    }
 }

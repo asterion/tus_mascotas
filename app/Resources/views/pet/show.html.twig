@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pet</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pet.id }}</td>
+            </tr>
+            <tr>
+                <th>Chip</th>
+                <td>{{ pet.chip }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ pet.type }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ pet.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ pet.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ pet.gender }}</td>
+            </tr>
+            <tr>
+                <th>Color</th>
+                <td>{{ pet.color }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{% if pet.birthdate %}{{ pet.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Kind</th>
+                <td>{{ pet.kind }}</td>
+            </tr>
+            <tr>
+                <th>Steril</th>
+                <td>{% if pet.steril %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Observations</th>
+                <td>{{ pet.observations }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pet_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('pet_edit', { 'id': pet.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

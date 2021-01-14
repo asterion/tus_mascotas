@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Pet
  *
  * @ORM\Table(name="pet")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PetRepository")
+ * @UniqueEntity("chip")
  */
 class Pet
 {
@@ -18,6 +21,18 @@ class Pet
     const TURTLE = 4;
     const BIRD   = 5;
     const OTHER  = 6;
+
+    const MALE   = 1;
+    const FEMALE = 2;
+
+    const TYPES = array(
+        self::DOG,
+        self::CAT,
+        self::FERRET,
+        self::TURTLE,
+        self::BIRD,
+        self::OTHER,
+    );
 
     /**
      * @var int
@@ -32,6 +47,7 @@ class Pet
      * @var int
      *
      * @ORM\Column(name="chip", type="integer", unique=true)
+     * @Assert\NotBlank()
      */
     private $chip;
 
@@ -39,6 +55,8 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=20)
+     * @Assert\NotBlank()
+     * @Assert\Choice(choices=Pet::TYPES, message="Choose a valid type.")
      */
     private $type;
 
@@ -46,6 +64,7 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=36)
+     * @Assert\NotBlank()
      */
     private $firstname;
 
@@ -53,6 +72,7 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=36, nullable=true)
+     * @Assert\NotBlank()
      */
     private $lastname;
 
@@ -60,6 +80,7 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=16)
+     * @Assert\NotBlank()
      */
     private $gender;
 
@@ -67,6 +88,7 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="color", type="string", length=36)
+     * @Assert\NotBlank()
      */
     private $color;
 
@@ -74,6 +96,7 @@ class Pet
      * @var \DateTime
      *
      * @ORM\Column(name="birthdate", type="datetime")
+     * @Assert\NotBlank()
      */
     private $birthdate;
 
@@ -81,6 +104,8 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="kind", type="string", length=36)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=36)
      */
     private $kind;
 
@@ -88,6 +113,7 @@ class Pet
      * @var bool
      *
      * @ORM\Column(name="steril", type="boolean")
+     * @Assert\NotBlank()
      */
     private $steril;
 
@@ -101,6 +127,7 @@ class Pet
     /**
      * @ORM\ManyToOne(targetEntity="Human", inversedBy="pets")
      * @ORM\JoinColumn(name="human_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $human;
 
@@ -376,5 +403,25 @@ class Pet
     public function getHuman()
     {
         return $this->human;
+    }
+
+    public function choicesType()
+    {
+        return array(
+            'DOG'    => self::DOG,
+            'CAT'    => self::CAT,
+            'FERRET' => self::FERRET,
+            'TURTLE' => self::TURTLE,
+            'BIRD'   => self::BIRD,
+            'OTHER'  => self::OTHER,
+        );
+    }
+
+    public function choicesGender()
+    {
+        return array(
+            'MALE'    => self::MALE,
+            'FEMALE'  => self::FEMALE,
+        );
     }
 }
