@@ -34,6 +34,11 @@ class Pet
         self::OTHER,
     );
 
+    const GENDERS = array(
+        'MALE'    => self::MALE,
+        'FEMALE'  => self::FEMALE,
+    );
+
     /**
      * @var int
      *
@@ -72,7 +77,6 @@ class Pet
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=36, nullable=true)
-     * @Assert\NotBlank()
      */
     private $lastname;
 
@@ -262,6 +266,23 @@ class Pet
     }
 
     /**
+     * Get gender
+     *
+     * @return string
+     */
+    public function getGenderName()
+    {
+        $genders = array_flip(self::GENDERS);
+
+        if (isset($genders[$this->gender])) {
+            return $genders[$this->gender];
+        }
+
+        return $this->gender;
+    }
+
+
+    /**
      * Set color
      *
      * @param string $color
@@ -419,9 +440,6 @@ class Pet
 
     public function choicesGender()
     {
-        return array(
-            'MALE'    => self::MALE,
-            'FEMALE'  => self::FEMALE,
-        );
+        return self::GENDERS;
     }
 }

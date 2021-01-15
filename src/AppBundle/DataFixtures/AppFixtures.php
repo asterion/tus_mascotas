@@ -31,9 +31,14 @@ class AppFixtures extends Fixture
 
             $pet->setChip($faker->unique()->randomDigit());
             $pet->setType(rand(1, 6));
-            $pet->setFirstname($faker->firstname());
             $pet->setLastname($faker->lastname());
-            $pet->setGender((boolean)rand(1,2));
+            $pet->setFirstname($this->petName());
+            $pet->setGender(Pet::MALE);
+
+            if (($i % 2) == 0) {
+                $pet->setGender(Pet::FEMALE);
+            }
+
             $pet->setColor($faker->name());
             $pet->setBirthdate(new \DateTime('now'));
             $pet->setKind($faker->name());
@@ -45,6 +50,15 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+    }
+
+    public static function petName() {
+        $names = array(
+            'Bella', 'Luna', 'Lucy', 'Daisy', 'Lola', 'Sadie', 'Molly', 'Bailey', 'Stella', 'Maggie',
+            'Max','Charlie','Cooper','Buddy','Milo','Bear','Rocky','Duke','Tucker','Jack'
+        );
+
+        return $names[rand(0, count($names)-1)];
     }
 
     public static function getRuts() {
