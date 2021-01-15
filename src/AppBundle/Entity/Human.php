@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="human")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HumanRepository")
  */
-class Human
+class Human implements \JsonSerializable
 {
     /**
      * @var int
@@ -141,5 +141,13 @@ class Human
     public function __toString()
     {
         return sprintf('%s %s', $this->getFirstname(), $this->getLastname());
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'firstname' => $this->getFirstname(),
+            'lastname'  => $this->getLastname(),
+        );
     }
 }

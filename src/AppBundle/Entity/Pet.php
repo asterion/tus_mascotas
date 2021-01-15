@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PetRepository")
  * @UniqueEntity("chip")
  */
-class Pet
+class Pet implements \JsonSerializable
 {
     const DOG    = 1;
     const CAT    = 2;
@@ -441,5 +441,22 @@ class Pet
     public function choicesGender()
     {
         return self::GENDERS;
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'chip'              => $this->getChip(),
+            'firstname'         => $this->getFirstname(),
+            'type'              => $this->getType(),
+            'lastname'          => $this->getLastname(),
+            'gender'            => $this->getGender(),
+            'color'             => $this->getColor(),
+            'birthdate'         => $this->getBirthdate(),
+            'kind'              => $this->getKind(),
+            'steril'            => $this->getSteril(),
+            'observations'      => $this->getObservations(),
+            'human'             => $this->getHuman(),
+        );
     }
 }
