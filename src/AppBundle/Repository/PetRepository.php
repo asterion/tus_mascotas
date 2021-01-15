@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class PetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByHumanRut($rut)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM AppBundle:Pet p JOIN p.human h WHERE h.rut = :rut'
+            )
+            ->setParameter('rut', $rut)
+            ->getResult();
+    }
 }

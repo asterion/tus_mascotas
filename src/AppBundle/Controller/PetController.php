@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Pet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Pet controller.
@@ -20,14 +21,24 @@ class PetController extends Controller
      * @Route("/", name="pet_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $word = $request->query->get('s', null);
 
-        $pets = $em->getRepository('AppBundle:Pet')->findAll();
+        if (is_numeric($word)) {
+            $pets = $em->getRepository(Pet::class)->findByChip($word);
+        } elseif ($this->isRut($word)) {
+            $pets = $em->getRepository(Pet::class)->findByHumanRut($word);
+        } elseif ($word) {
+            $pets = $em->getRepository(Pet::class)->findByFirstname($word);
+        } else {
+            $pets = $em->getRepository(Pet::class)->findAll();
+        }
 
         return $this->render('pet/index.html.twig', array(
             'pets' => $pets,
+            's' => $word,
         ));
     }
 
@@ -132,5 +143,21 @@ class PetController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    protected function isRut($rut)
+    {
+        $rut = preg_replace('/[^0-9kK]/', '', $rut);
+
+        $dv = mb_strtoupper(substr($rut, -1));
+        $rut = substr($rut, 0, strlen($rut)-1);
+
+        $s=1;
+
+        for($m=0;$rut!=0;$rut/=10) {
+            $s=($s+$rut%10*(9-$m++%6))%11;
+        }
+
+        return chr($s?$s+47:75) == $dv;
     }
 }

@@ -4,7 +4,7 @@ Search: Buscar
 Logout: Salir
 Pets: Mascotas
 Chip: Chip
-Seleccion una opcion: Selecione una opción...
+Select an option: Elija una opción
 DOG: Perro
 CAT: Gato
 FERRET: Hurón
@@ -34,3 +34,8 @@ Yes: Si
 show: ver
 edit: editar
 Create a new pet: Crear nueva mascota
+Pet edit: Editar mascota
+Edit: Editar
+Delete: Eliminar
+Back to the list: Volver al listado
+Pet creation: Creación de mascota

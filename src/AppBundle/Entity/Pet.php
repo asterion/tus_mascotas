@@ -26,12 +26,12 @@ class Pet implements \JsonSerializable
     const FEMALE = 2;
 
     const TYPES = array(
-        self::DOG,
-        self::CAT,
-        self::FERRET,
-        self::TURTLE,
-        self::BIRD,
-        self::OTHER,
+        'DOG'    => self::DOG,
+        'CAT'    => self::CAT,
+        'FERRET' => self::FERRET,
+        'TURTLE' => self::TURTLE,
+        'BIRD'   => self::BIRD,
+        'OTHER'  => self::OTHER,
     );
 
     const GENDERS = array(
@@ -194,6 +194,23 @@ class Pet implements \JsonSerializable
     }
 
     /**
+     * Get gender
+     *
+     * @return string
+     */
+    public function getTypeName()
+    {
+        dump(self::TYPES);
+        $types = array_flip(self::TYPES);
+
+        if (isset($types[$this->type])) {
+            return $types[$this->type];
+        }
+
+        return $this->gender;
+    }
+
+    /**
      * Set firstname
      *
      * @param string $firstname
@@ -280,7 +297,6 @@ class Pet implements \JsonSerializable
 
         return $this->gender;
     }
-
 
     /**
      * Set color
