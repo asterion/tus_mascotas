@@ -45,3 +45,13 @@ Para cargar datos de pruebas
 ```
 php bin/console doctrine:fixtures:load -n
 ```
+
+## Probar
+
+**Correr servidor de pruebas**
+
+```
+php bin/console server:run
+```
+
+**Acceder a http://127.0.0.1:8000 o similiar que indico el comando anterior**
