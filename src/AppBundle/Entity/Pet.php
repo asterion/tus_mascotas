@@ -105,6 +105,14 @@ class Pet implements \JsonSerializable
     private $birthdate;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Assert\NotBlank()
+     */
+    private $createdAt;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="kind", type="string", length=36)
@@ -347,6 +355,30 @@ class Pet implements \JsonSerializable
     }
 
     /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Pet
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * Set kind
      *
      * @param string $kind
@@ -474,5 +506,12 @@ class Pet implements \JsonSerializable
             'observations'      => $this->getObservations(),
             'human'             => $this->getHuman(),
         );
+    }
+
+    public function __construct()
+    {
+        if (!$this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
     }
 }
