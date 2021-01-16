@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+var webpack = require('webpack');
 
 Encore
     // directory where compiled assets will be stored
@@ -23,7 +24,8 @@ Encore
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
-    .enableSingleRuntimeChunk()
+    // .enableSingleRuntimeChunk()
+    .disableSingleRuntimeChunk()
 
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -37,7 +39,11 @@ Encore
     .enableSassLoader()
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .addPlugin(new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();

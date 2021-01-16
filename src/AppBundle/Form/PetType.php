@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class PetType extends AbstractType
 {
@@ -16,21 +18,27 @@ class PetType extends AbstractType
     {
         $builder->add('chip')
             ->add('type', ChoiceType::class, array(
-                'choices' => \AppBundle\Entity\Pet::choicesType(),
+                'choices'     => \AppBundle\Entity\Pet::choicesType(),
                 'placeholder' => 'Select an option',
             ))
             ->add('firstname')
             ->add('lastname')
             ->add('gender', ChoiceType::class, array(
-                'choices' => \AppBundle\Entity\Pet::choicesGender(),
+                'choices'     => \AppBundle\Entity\Pet::choicesGender(),
                 'placeholder' => 'Select an option',
             ))
             ->add('color')
-            ->add('birthdate')
+            ->add('birthdate', DateType::class, array(
+                'widget' => 'single_text',
+                'html5'  => false,
+                'format' => 'dd-mm-yyyy',
+                'attr'   => ['class' => 'js-datepicker'],
+            ))
             ->add('kind')
             ->add('steril')
-            ->add('human', ChoiceType::class, array(
-                'placeholder' => 'Select an option'
+            ->add('human', EntityType::class, array(
+                'class'        => 'AppBundle:Human',
+                'choice_label' => 'rut',
             ))
             ->add('observations');
     }
