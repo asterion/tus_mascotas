@@ -39,6 +39,7 @@ class PetType extends AbstractType
             ->add('human', EntityType::class, array(
                 'class'        => 'AppBundle:Human',
                 'choice_label' => 'rut',
+                'placeholder'  => 'Select an option'
             ))
             ->add('observations');
     }

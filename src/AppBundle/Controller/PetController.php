@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\ValidateTrait;
 
 /**
  * Pet controller.
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PetController extends Controller
 {
+    use ValidateTrait;
+
     /**
      * Lists all pet entities.
      *
@@ -29,7 +32,7 @@ class PetController extends Controller
 
         if (is_numeric($word)) {
             $pets = $em->getRepository(Pet::class)->findByChip($word);
-        } elseif ($this->isRut($word)) {
+        } elseif (self::isRut($word)) {
             $pets = $em->getRepository(Pet::class)->findByHumanRut($word);
         } elseif ($word) {
             $pets = $em->getRepository(Pet::class)->findByFirstname($word);
@@ -74,9 +77,15 @@ class PetController extends Controller
             return $this->redirectToRoute('pet_index');
         }
 
+        $formHuman = $this->createForm('AppBundle\Form\HumanType', new \AppBundle\Entity\Human(), array(
+            'action' => $this->generateUrl('api_post_human'),
+            'method' => 'POST',
+        ));
+
         return $this->render('pet/new.html.twig', array(
             'pet' => $pet,
             'form' => $form->createView(),
+            'formHuman' => $formHuman->createView(),
         ));
     }
 
@@ -172,21 +181,5 @@ class PetController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    protected function isRut($rut)
-    {
-        $rut = preg_replace('/[^0-9kK]/', '', $rut);
-
-        $dv = mb_strtoupper(substr($rut, -1));
-        $rut = substr($rut, 0, strlen($rut)-1);
-
-        $s=1;
-
-        for($m=0;$rut!=0;$rut/=10) {
-            $s=($s+$rut%10*(9-$m++%6))%11;
-        }
-
-        return chr($s?$s+47:75) == $dv;
     }
 }

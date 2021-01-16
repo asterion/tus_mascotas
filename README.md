@@ -23,7 +23,7 @@ Codigo en github [Tus mascotas](https://github.com/asterion/tus_mascotas) con ra
 - [x] Endpoint REST /api/pet/{chip}
 - [x] Base de datos normalizada: pet y human tablas.
 - [x] Datepicker con bootstrap-datepicker para fecha de nacimiento
-- [x] Decidí no usar SQL Nativo para el proyecto. Dejo ejemplos en el README
+- [x] Decidí no usar SQL Nativo para el proyecto. Dejo ejemplos en el README para demostrar conocimiento.
 - [x] La próxima versión tendrá un paginador para los listados.
 
 ## SQL Nativo

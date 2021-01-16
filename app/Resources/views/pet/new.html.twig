@@ -5,7 +5,20 @@
     <h2>{{'Pet creation'|trans}}</h2>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.chip) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.gender) }}
+        {{ form_row(form.color) }}
+        {{ form_row(form.birthdate) }}
+        {{ form_row(form.kind) }}
+        {{ form_row(form.steril) }}
+        {{ form_row(form.human) }}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newHumanModal">
+          {{'new human'|trans}}
+        </button>
+        {{ form_row(form.observations) }}
         <input type="submit" value="{{'Create'|trans}}" class="btn btn-primary">
     {{ form_end(form) }}
 
@@ -14,4 +27,27 @@
             <a href="{{ path('pet_index') }}">{{'Back to the list'|trans}}</a>
         </li>
     </ul>
+
+
+    <div class="modal fade" id="newHumanModal" tabindex="-1" aria-labelledby="newHumanModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          {{ form_start(formHuman) }}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newHumanModalLabel">{{ 'new human'|trans }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                {{ form_end(formHuman) }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close'|trans}}</button>
+            <button type="submit" class="btn btn-primary">{{'Save changes'|trans}}</button>
+          </div>
+        </div>
+        {{ form_end(formHuman) }}
+      </div>
+    </div>
 {% endblock %}
