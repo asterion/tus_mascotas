@@ -208,7 +208,6 @@ class Pet implements \JsonSerializable
      */
     public function getTypeName()
     {
-        dump(self::TYPES);
         $types = array_flip(self::TYPES);
 
         if (isset($types[$this->type])) {
