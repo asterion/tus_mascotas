@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Pet controller.
@@ -36,9 +37,15 @@ class PetController extends Controller
             $pets = $em->getRepository(Pet::class)->findAll();
         }
 
+        $forms = array();
+        foreach ($pets as $pet) {
+            $forms[$pet->getId()] = $this->createDeleteForm($pet)->createView();
+        }
+
         return $this->render('pet/index.html.twig', array(
             'pets' => $pets,
             's' => $word,
+            'forms' => $forms
         ));
     }
 
@@ -59,7 +66,12 @@ class PetController extends Controller
             $em->persist($pet);
             $em->flush();
 
-            return $this->redirectToRoute('pet_show', array('id' => $pet->getId()));
+            $this->addFlash(
+                 'notice',
+                 'Success new pet!'
+             );
+
+            return $this->redirectToRoute('pet_index');
         }
 
         return $this->render('pet/new.html.twig', array(
@@ -94,12 +106,19 @@ class PetController extends Controller
     {
         $deleteForm = $this->createDeleteForm($pet);
         $editForm = $this->createForm('AppBundle\Form\PetType', $pet);
+        $editForm->remove('chip');
+        $editForm->remove('human');
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('pet_edit', array('id' => $pet->getId()));
+            $this->addFlash(
+                 'notice',
+                 'Success edit!'
+             );
+
+            return $this->redirectToRoute('pet_index');
         }
 
         return $this->render('pet/edit.html.twig', array(
@@ -124,6 +143,16 @@ class PetController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($pet);
             $em->flush();
+
+            $this->addFlash(
+                 'notice',
+                 'Success delete!'
+             );
+        } else {
+            $this->addFlash(
+                 'error',
+                 'Error!'
+             );
         }
 
         return $this->redirectToRoute('pet_index');
