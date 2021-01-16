@@ -15,14 +15,14 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>{{ 'Chip' | trans }}</th>
+                        <th class="text-center">{{ 'Chip' | trans }}</th>
                         <th>{{ 'Firstname' | trans }}</th>
                         <th>{{ 'Type' | trans }}</th>
                         <th>{{ 'Gender' | trans }}</th>
                         <th>{{ 'Kind' | trans }}</th>
                         <th>{{ 'Record date' | trans }}</th>
                         <th>{{ 'Humano' | trans }}</th>
-                        <th>{{ 'Actions' | trans }}</th>
+                        <th colspan="2" class="text-center">{{ 'Actions' | trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,15 +35,13 @@
                         <td>{{ pet.kind }}</td>
                         <td>{% if pet.createdAt %}{{ pet.createdAt|date(format_date) }}{% endif %}</td>
                         <td>{{ pet.human }}</td>
-                        <td>
-                            <ul>
-                                <li>
-                                    <a href="{{ path('pet_edit', { 'id': pet.id }) }}">{{ 'edit'|trans }}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('pet_delete', { 'id': pet.id }) }}">{{ 'delete'|trans }}</a>
-                                </li>
-                            </ul>
+                        <td class="text-center">
+                            <a href="{{ path('pet_edit', { 'id': pet.id }) }}" class="btn btn-sm btn-primary">{{ 'edit'|trans }}</a>
+                        </td>
+                        <td class="text-center">
+                            {{ form_start(forms[pet.id]) }}
+                                <input type="submit" value="{{ 'Delete'|trans }}" class="btn btn-sm btn-danger" onclick="confirm('{{'Sure?'|trans}}')">
+                            {{ form_end(forms[pet.id]) }}
                         </td>
                     </tr>
                     {% endfor %}
